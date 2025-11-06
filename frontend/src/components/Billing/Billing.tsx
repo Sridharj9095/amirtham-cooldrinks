@@ -261,7 +261,8 @@ const Billing = () => {
 
       console.log('Saving order:', orderData);
       
-      const response = await axios.post('http://localhost:5001/api/orders', orderData, {
+      const apiUrl = import.meta.env.PROD ? '/api/orders' : 'http://localhost:5001/api/orders';
+      const response = await axios.post(apiUrl, orderData, {
         headers: {
           'Content-Type': 'application/json',
         },

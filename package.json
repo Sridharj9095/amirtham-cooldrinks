@@ -1,13 +1,18 @@
 {
   "name": "amirtham-cooldrinks",
   "version": "1.0.0",
-  "description": "Fresh Juices & Milkshakes Shop Website",
+  "description": "Amirtham Cooldrinks Restaurant Management System",
+  "private": true,
+  "workspaces": [
+    "frontend",
+    "backend"
+  ],
   "scripts": {
-    "dev": "concurrently \"npm run dev --prefix frontend\" \"npm run dev --prefix backend\"",
-    "install:all": "npm install && npm install --prefix frontend && npm install --prefix backend"
+    "dev": "concurrently \"npm run dev --prefix backend\" \"npm run dev --prefix frontend\"",
+    "build": "npm run build --prefix frontend",
+    "install:all": "npm install --prefix frontend && npm install --prefix backend"
   },
   "devDependencies": {
     "concurrently": "^8.2.2"
   }
 }
-

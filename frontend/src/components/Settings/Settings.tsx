@@ -76,7 +76,8 @@ const Settings: React.FC<SettingsProps> = ({ darkMode, onDarkModeChange }) => {
   useEffect(() => {
     const fetchSettings = async () => {
       try {
-        const response = await axios.get('http://localhost:5001/api/settings');
+        const apiUrl = import.meta.env.PROD ? '/api/settings' : 'http://localhost:5001/api/settings';
+        const response = await axios.get(apiUrl);
         setUpiId(response.data.upiId || '');
         setSoundNotifications(response.data.soundNotifications ?? true);
         setAutoSaveOrders(response.data.autoSaveOrders ?? false);
@@ -114,7 +115,8 @@ const Settings: React.FC<SettingsProps> = ({ darkMode, onDarkModeChange }) => {
     setSoundNotifications(value);
     
     try {
-      await axios.put('http://localhost:5001/api/settings', {
+      const apiUrl = import.meta.env.PROD ? '/api/settings' : 'http://localhost:5001/api/settings';
+      await axios.put(apiUrl, {
         soundNotifications: value,
         autoSaveOrders,
         upiId,
@@ -135,7 +137,8 @@ const Settings: React.FC<SettingsProps> = ({ darkMode, onDarkModeChange }) => {
     setAutoSaveOrders(value);
     
     try {
-      await axios.put('http://localhost:5001/api/settings', {
+      const apiUrl = import.meta.env.PROD ? '/api/settings' : 'http://localhost:5001/api/settings';
+      await axios.put(apiUrl, {
         soundNotifications,
         autoSaveOrders: value,
         upiId,
@@ -224,7 +227,8 @@ const Settings: React.FC<SettingsProps> = ({ darkMode, onDarkModeChange }) => {
     }
 
     try {
-      const response = await axios.put('http://localhost:5001/api/settings/upi-id', {
+      const apiUrl = import.meta.env.PROD ? '/api/settings/upi-id' : 'http://localhost:5001/api/settings/upi-id';
+      const response = await axios.put(apiUrl, {
         upiId: upiId.trim(),
       });
       setUpiId(response.data.upiId);

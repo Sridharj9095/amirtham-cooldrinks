@@ -25,7 +25,8 @@ const QRPayment = ({ open, onClose, order, onPaymentComplete }: QRPaymentProps) 
       if (open) {
         setLoadingUpiId(true);
         try {
-          const response = await axios.get('http://localhost:5001/api/settings');
+          const apiUrl = import.meta.env.PROD ? '/api/settings' : 'http://localhost:5001/api/settings';
+          const response = await axios.get(apiUrl);
           setUpiId(response.data.upiId || '');
         } catch (error) {
           console.error('Error fetching UPI ID:', error);

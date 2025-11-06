@@ -1,0 +1,10 @@
+{
+  "name": "amirtham-cooldrinks-api",
+  "version": "1.0.0",
+  "type": "module",
+  "dependencies": {
+    "@vercel/node": "^3.0.0",
+    "mongoose": "^8.0.3"
+  }
+}
+

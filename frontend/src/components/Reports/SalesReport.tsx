@@ -233,7 +233,8 @@ const SalesReport = () => {
   const fetchSalesData = async () => {
     setLoading(true);
     try {
-      const response = await axios.get('http://localhost:5001/api/sales/monthly', {
+      const apiUrl = import.meta.env.PROD ? '/api/sales/monthly' : 'http://localhost:5001/api/sales/monthly';
+      const response = await axios.get(apiUrl, {
         params: { year, month },
       });
       setSalesData(response.data);
@@ -376,7 +377,8 @@ const SalesReport = () => {
         end.setHours(23, 59, 59, 999);
       }
 
-      const response = await axios.delete('http://localhost:5001/api/orders/range/by-date', {
+      const apiUrl = import.meta.env.PROD ? '/api/orders/range/by-date' : 'http://localhost:5001/api/orders/range/by-date';
+      const response = await axios.delete(apiUrl, {
         data: {
           startDate: start.toISOString(),
           endDate: end.toISOString(),
