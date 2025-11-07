@@ -1,8 +1,8 @@
 {
-  "buildCommand": "npm run build --prefix frontend",
+  "buildCommand": "cd frontend && npm ci && npm run build",
   "outputDirectory": "frontend/dist",
-  "installCommand": "npm install && npm install --prefix frontend",
-  "framework": "vite",
+  "installCommand": "npm install",
+  "framework": null,
   "functions": {
     "api/**/*.ts": {
       "runtime": "@vercel/node"
@@ -19,4 +19,3 @@
     }
   ]
 }
-
