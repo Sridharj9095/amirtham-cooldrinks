@@ -18,12 +18,11 @@ import {
   Box,
   Chip,
   Paper,
-  Divider,
   Snackbar,
   Alert,
 } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSave, faTrash, faShoppingCart, faPlus } from '@fortawesome/free-solid-svg-icons';
+import { faSave, faTrash, faShoppingCart } from '@fortawesome/free-solid-svg-icons';
 
 interface MultiOrderManagerProps {
   currentCartItems: CartItem[];

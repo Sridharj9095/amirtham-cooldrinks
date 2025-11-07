@@ -44,9 +44,9 @@ import {
   PointElement,
   LineElement,
 } from 'chart.js';
-import { Bar, Line } from 'react-chartjs-2';
+import { Bar } from 'react-chartjs-2';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCalendarAlt, faDownload, faTrash, faSort, faSortUp, faSortDown } from '@fortawesome/free-solid-svg-icons';
+import { faDownload, faTrash, faSortUp, faSortDown } from '@fortawesome/free-solid-svg-icons';
 import jsPDF from 'jspdf';
 
 ChartJS.register(
@@ -408,7 +408,7 @@ const SalesReport = () => {
     }
   };
 
-  const handleDownloadPDF = (type: 'monthly' | 'daily' | 'all') => {
+  const handleDownloadPDF = (_type: 'monthly' | 'daily' | 'all') => {
     if (!salesData) return;
 
     const doc = new jsPDF();

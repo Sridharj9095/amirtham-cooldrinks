@@ -11,10 +11,10 @@ import { getApiBaseUrl } from '../../utils/api';
 
 const Billing = () => {
   const navigate = useNavigate();
-  const [cartItems, setCartItems] = useState(cartStorage.getItems());
+  const [cartItems] = useState(cartStorage.getItems());
   const [totalAmount, setTotalAmount] = useState(0);
   const [orderNumber, setOrderNumber] = useState('');
-  const [orderDate, setOrderDate] = useState(new Date());
+  const [orderDate] = useState(new Date());
   const [qrPaymentOpen, setQrPaymentOpen] = useState(false);
   const [order, setOrder] = useState<Order | null>(null);
   const [redirecting, setRedirecting] = useState(false);

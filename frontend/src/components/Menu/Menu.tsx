@@ -262,7 +262,7 @@ const Menu = () => {
       {filteredItems.length > 0 && (
         <>
           <Grid container spacing={3}>
-            {displayedItems.map((item, index) => {
+            {displayedItems.map((item) => {
               console.log('Rendering item:', item.name, item.id);
               return (
                 <Grid item xs={12} sm={6} md={4} lg={3} key={item.id}>

@@ -12,7 +12,6 @@ const MenuManagement = () => {
   const navigate = useNavigate();
   const theme = useTheme();
   const [menuItems, setMenuItems] = useState<MenuItem[]>([]);
-  const [categories, setCategories] = useState<string[]>([]);
   const [categoryDialogOpen, setCategoryDialogOpen] = useState(false);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [itemToDelete, setItemToDelete] = useState<MenuItem | null>(null);
@@ -30,12 +29,10 @@ const MenuManagement = () => {
       // Update categories from fetched items
       const uniqueCategories = [...new Set(items.map(item => item.category))];
       uniqueCategories.forEach(cat => categoryStorage.addCategory(cat));
-      setCategories(categoryStorage.getCategories());
     } catch (error: any) {
       console.error('Error loading menu items from API:', error);
       // Fallback to localStorage
       setMenuItems(menuStorage.getItems());
-      setCategories(categoryStorage.getCategories());
     }
   };
 
