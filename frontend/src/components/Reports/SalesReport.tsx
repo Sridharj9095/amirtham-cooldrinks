@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import axios from 'axios';
+import { getApiBaseUrl } from '../../utils/api';
 import {
   Container,
   Box,
@@ -233,7 +234,7 @@ const SalesReport = () => {
   const fetchSalesData = async () => {
     setLoading(true);
     try {
-      const apiUrl = import.meta.env.PROD ? '/api/sales/monthly' : 'http://localhost:5001/api/sales/monthly';
+      const apiUrl = `${getApiBaseUrl()}/sales/monthly`;
       const response = await axios.get(apiUrl, {
         params: { year, month },
       });
@@ -377,7 +378,7 @@ const SalesReport = () => {
         end.setHours(23, 59, 59, 999);
       }
 
-      const apiUrl = import.meta.env.PROD ? '/api/orders/range/by-date' : 'http://localhost:5001/api/orders/range/by-date';
+      const apiUrl = `${getApiBaseUrl()}/orders/range/by-date`;
       const response = await axios.delete(apiUrl, {
         data: {
           startDate: start.toISOString(),

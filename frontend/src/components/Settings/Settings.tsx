@@ -45,6 +45,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { cartStorage, pendingOrdersStorage, menuStorage, categoryStorage } from '../../utils/localStorage';
 import axios from 'axios';
+import { getApiBaseUrl } from '../../utils/api';
 
 interface SettingsProps {
   darkMode: boolean;
@@ -76,7 +77,7 @@ const Settings: React.FC<SettingsProps> = ({ darkMode, onDarkModeChange }) => {
   useEffect(() => {
     const fetchSettings = async () => {
       try {
-        const apiUrl = import.meta.env.PROD ? '/api/settings' : 'http://localhost:5001/api/settings';
+        const apiUrl = `${getApiBaseUrl()}/settings`;
         const response = await axios.get(apiUrl);
         setUpiId(response.data.upiId || '');
         setSoundNotifications(response.data.soundNotifications ?? true);
@@ -115,7 +116,7 @@ const Settings: React.FC<SettingsProps> = ({ darkMode, onDarkModeChange }) => {
     setSoundNotifications(value);
     
     try {
-      const apiUrl = import.meta.env.PROD ? '/api/settings' : 'http://localhost:5001/api/settings';
+      const apiUrl = `${getApiBaseUrl()}/settings`;
       await axios.put(apiUrl, {
         soundNotifications: value,
         autoSaveOrders,
@@ -137,7 +138,7 @@ const Settings: React.FC<SettingsProps> = ({ darkMode, onDarkModeChange }) => {
     setAutoSaveOrders(value);
     
     try {
-      const apiUrl = import.meta.env.PROD ? '/api/settings' : 'http://localhost:5001/api/settings';
+      const apiUrl = `${getApiBaseUrl()}/settings`;
       await axios.put(apiUrl, {
         soundNotifications,
         autoSaveOrders: value,
@@ -227,7 +228,7 @@ const Settings: React.FC<SettingsProps> = ({ darkMode, onDarkModeChange }) => {
     }
 
     try {
-      const apiUrl = import.meta.env.PROD ? '/api/settings/upi-id' : 'http://localhost:5001/api/settings/upi-id';
+      const apiUrl = `${getApiBaseUrl()}/settings/upi-id`;
       const response = await axios.put(apiUrl, {
         upiId: upiId.trim(),
       });
@@ -243,7 +244,8 @@ const Settings: React.FC<SettingsProps> = ({ darkMode, onDarkModeChange }) => {
 
   const handleUpiIdCancel = async () => {
     try {
-      const response = await axios.get('http://localhost:5001/api/settings');
+      const apiUrl = `${getApiBaseUrl()}/settings`;
+      const response = await axios.get(apiUrl);
       setUpiId(response.data.upiId || '');
     } catch (error) {
       console.error('Error fetching UPI ID:', error);

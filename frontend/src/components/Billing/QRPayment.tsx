@@ -5,6 +5,7 @@ import { faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 import { QRCodeSVG } from 'qrcode.react';
 import axios from 'axios';
 import { Order } from '../../types';
+import { getApiBaseUrl } from '../../utils/api';
 
 interface QRPaymentProps {
   open: boolean;
@@ -25,7 +26,7 @@ const QRPayment = ({ open, onClose, order, onPaymentComplete }: QRPaymentProps) 
       if (open) {
         setLoadingUpiId(true);
         try {
-          const apiUrl = import.meta.env.PROD ? '/api/settings' : 'http://localhost:5001/api/settings';
+          const apiUrl = `${getApiBaseUrl()}/settings`;
           const response = await axios.get(apiUrl);
           setUpiId(response.data.upiId || '');
         } catch (error) {

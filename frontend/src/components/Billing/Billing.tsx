@@ -7,6 +7,7 @@ import axios from 'axios';
 import { Container, Paper, Typography, Box, Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Divider, Dialog, DialogContent, CircularProgress } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPrint, faCreditCard, faArrowLeft } from '@fortawesome/free-solid-svg-icons';
+import { getApiBaseUrl } from '../../utils/api';
 
 const Billing = () => {
   const navigate = useNavigate();
@@ -261,7 +262,7 @@ const Billing = () => {
 
       console.log('Saving order:', orderData);
       
-      const apiUrl = import.meta.env.PROD ? '/api/orders' : 'http://localhost:5001/api/orders';
+      const apiUrl = `${getApiBaseUrl()}/orders`;
       const response = await axios.post(apiUrl, orderData, {
         headers: {
           'Content-Type': 'application/json',

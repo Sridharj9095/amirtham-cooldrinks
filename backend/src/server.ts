@@ -12,8 +12,17 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 5001;
 
+// CORS configuration
+const corsOptions = {
+  origin: process.env.CLIENT_URL 
+    ? process.env.CLIENT_URL.split(',').map(url => url.trim()) // Support multiple origins
+    : (process.env.NODE_ENV === 'production' ? '*' : 'http://localhost:3000'), // Allow all in production if CLIENT_URL not set
+  credentials: true,
+  optionsSuccessStatus: 200
+};
+
 // Middleware
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(express.json());
 
 // Connect to MongoDB
@@ -25,7 +34,11 @@ app.use('/api/sales', salesRoutes);
 app.use('/api/menu-items', menuItemRoutes);
 app.use('/api/settings', settingsRoutes);
 
-// Health check
+// Health check endpoints
+app.get('/', (req, res) => {
+  res.json({ status: 'OK', message: 'Server is running' });
+});
+
 app.get('/api/health', (req, res) => {
   res.json({ status: 'OK', message: 'Server is running' });
 });
