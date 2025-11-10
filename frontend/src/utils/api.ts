@@ -4,14 +4,14 @@ import { MenuItem } from '../types';
 // Use environment variable for API URL, fallback to localhost in development
 const API_BASE_URL = import.meta.env.VITE_API_URL || 
   (import.meta.env.PROD 
-    ? 'https://your-backend-app.onrender.com/api' // Replace with your Render backend URL
+    ? 'https://amirtham-cooldrinks-backend.onrender.com/api'
     : 'http://localhost:5001/api');
 
 // Export helper function to get API base URL
 export const getApiBaseUrl = (): string => {
   return import.meta.env.VITE_API_URL || 
     (import.meta.env.PROD 
-      ? 'https://your-backend-app.onrender.com/api' // Replace with your Render backend URL
+      ? 'https://amirtham-cooldrinks-backend.onrender.com/api'
       : 'http://localhost:5001/api');
 };
 
