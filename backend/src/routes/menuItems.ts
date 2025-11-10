@@ -11,7 +11,7 @@ router.get('/', async (req: Request, res: Response) => {
       const items = await MenuItem.find().sort({ createdAt: -1 });
       // Convert to frontend format (add id field from _id)
       const formattedItems = items.map(item => ({
-        id: item._id.toString(),
+        id: (item._id as mongoose.Types.ObjectId).toString(),
         name: item.name,
         category: item.category,
         description: item.description,
@@ -38,7 +38,7 @@ router.get('/:id', async (req: Request, res: Response) => {
       }
       // Convert to frontend format
       res.json({
-        id: item._id.toString(),
+        id: (item._id as mongoose.Types.ObjectId).toString(),
         name: item.name,
         category: item.category,
         description: item.description,
@@ -85,7 +85,7 @@ router.post('/', async (req: Request, res: Response) => {
 
       // Convert to frontend format
       res.status(201).json({
-        id: savedItem._id.toString(),
+        id: (savedItem._id as mongoose.Types.ObjectId).toString(),
         name: savedItem.name,
         category: savedItem.category,
         description: savedItem.description,
@@ -139,7 +139,7 @@ router.put('/:id', async (req: Request, res: Response) => {
 
       // Convert to frontend format
       res.json({
-        id: item._id.toString(),
+        id: (item._id as mongoose.Types.ObjectId).toString(),
         name: item.name,
         category: item.category,
         description: item.description,
