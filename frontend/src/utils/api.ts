@@ -16,6 +16,11 @@ const getBaseUrl = () => {
 
 const API_BASE_URL = getBaseUrl();
 
+// Log API base URL in development for debugging
+if (import.meta.env.DEV) {
+  console.log('API Base URL:', API_BASE_URL);
+}
+
 // Export helper function to get API base URL
 export const getApiBaseUrl = (): string => {
   const envUrl = import.meta.env.VITE_API_URL;
@@ -32,7 +37,36 @@ const api = axios.create({
   headers: {
     'Content-Type': 'application/json',
   },
+  timeout: 30000, // 30 second timeout for Render's cold starts
 });
+
+// Add request interceptor for better error handling
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response) {
+      // Server responded with error status
+      console.error('API Error:', {
+        url: error.config?.url,
+        method: error.config?.method,
+        status: error.response.status,
+        data: error.response.data,
+      });
+    } else if (error.request) {
+      // Request was made but no response received
+      console.error('API Request Error:', {
+        url: error.config?.url,
+        method: error.config?.method,
+        message: 'No response from server. Check if backend is running.',
+        baseURL: API_BASE_URL,
+      });
+    } else {
+      // Error setting up request
+      console.error('API Setup Error:', error.message);
+    }
+    return Promise.reject(error);
+  }
+);
 
 // Menu Items API
 export const menuItemsAPI = {

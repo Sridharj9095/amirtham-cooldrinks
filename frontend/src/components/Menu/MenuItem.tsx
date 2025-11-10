@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { MenuItem as MenuItemType } from '../../types';
 import { cartStorage } from '../../utils/localStorage';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -10,7 +11,7 @@ interface MenuItemProps {
   onQuantityChange: () => void;
 }
 
-const MenuItem = ({ item, quantity, onQuantityChange }: MenuItemProps) => {
+const MenuItem = memo(({ item, quantity, onQuantityChange }: MenuItemProps) => {
   const theme = useTheme();
   
   const handleAdd = () => {
@@ -354,7 +355,9 @@ const MenuItem = ({ item, quantity, onQuantityChange }: MenuItemProps) => {
       </CardContent>
     </Card>
   );
-};
+});
+
+MenuItem.displayName = 'MenuItem';
 
 export default MenuItem;
 
