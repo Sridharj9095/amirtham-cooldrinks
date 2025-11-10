@@ -2,17 +2,34 @@ import axios from 'axios';
 import { MenuItem } from '../types';
 
 // Use environment variable for API URL, fallback to localhost in development
-const API_BASE_URL = import.meta.env.VITE_API_URL || 
-  (import.meta.env.PROD 
+// Ensure VITE_API_URL includes /api at the end
+const getBaseUrl = () => {
+  const envUrl = import.meta.env.VITE_API_URL;
+  if (envUrl) {
+    // If VITE_API_URL is set, ensure it ends with /api
+    return envUrl.endsWith('/api') ? envUrl : `${envUrl}/api`;
+  }
+  return import.meta.env.PROD 
     ? 'https://amirtham-cooldrinks-backend.onrender.com/api'
-    : 'http://localhost:5001/api');
+    : 'http://localhost:5001/api';
+};
+
+const API_BASE_URL = getBaseUrl();
+
+// Log the API URL for debugging (remove in production if needed)
+if (import.meta.env.PROD) {
+  console.log('API Base URL:', API_BASE_URL);
+}
 
 // Export helper function to get API base URL
 export const getApiBaseUrl = (): string => {
-  return import.meta.env.VITE_API_URL || 
-    (import.meta.env.PROD 
-      ? 'https://amirtham-cooldrinks-backend.onrender.com/api'
-      : 'http://localhost:5001/api');
+  const envUrl = import.meta.env.VITE_API_URL;
+  if (envUrl) {
+    return envUrl.endsWith('/api') ? envUrl : `${envUrl}/api`;
+  }
+  return import.meta.env.PROD 
+    ? 'https://amirtham-cooldrinks-backend.onrender.com/api'
+    : 'http://localhost:5001/api';
 };
 
 const api = axios.create({
