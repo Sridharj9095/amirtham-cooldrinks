@@ -1,7 +1,6 @@
 {
   "buildCommand": "npm run vercel-build",
   "outputDirectory": "frontend/dist",
-  "installCommand": "npm install --prefix frontend --no-workspaces --legacy-peer-deps",
   "framework": null,
   "rewrites": [
     {
