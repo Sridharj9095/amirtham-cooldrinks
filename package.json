@@ -12,7 +12,7 @@
   ],
   "scripts": {
     "dev": "concurrently \"npm run dev --prefix backend\" \"npm run dev --prefix frontend\"",
-    "build": "if [ -d frontend ]; then cd frontend && rm -rf node_modules package-lock.json && npm install --no-workspaces --include=optional && npm rebuild rollup --no-workspaces || true && npm run build; else echo 'Error: frontend directory not found' && pwd && ls -la && exit 1; fi",
+    "build": "if [ -d frontend ]; then cd frontend && npm install --legacy-peer-deps && npm run build; else echo 'Error: frontend directory not found' && pwd && ls -la && exit 1; fi",
     "install:all": "npm install --prefix frontend && npm install --prefix backend",
     "vercel-build": "pwd && ls -la && if [ -d frontend ]; then echo 'Found frontend directory' && cd frontend && npm install --no-workspaces --legacy-peer-deps && npm run build; else echo 'Frontend directory not found. Current directory contents:' && ls -la && exit 1; fi"
   },
