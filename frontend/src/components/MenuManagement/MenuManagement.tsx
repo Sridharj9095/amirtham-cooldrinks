@@ -30,7 +30,6 @@ const MenuManagement = () => {
       const uniqueCategories = [...new Set(items.map(item => item.category))];
       uniqueCategories.forEach(cat => categoryStorage.addCategory(cat));
     } catch (error: any) {
-      console.error('Error loading menu items from API:', error);
       // Fallback to localStorage
       setMenuItems(menuStorage.getItems());
     }
@@ -55,7 +54,6 @@ const MenuManagement = () => {
         setDeleteDialogOpen(false);
         setItemToDelete(null);
       } catch (error: any) {
-        console.error('Error deleting menu item:', error);
         alert(`Failed to delete menu item: ${error.message}`);
         // Still try to remove from localStorage
         menuStorage.deleteItem(itemToDelete.id);

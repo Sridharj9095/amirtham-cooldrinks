@@ -213,7 +213,7 @@ const SalesReport = () => {
         try {
           observer.observe(currentTarget);
         } catch (error) {
-          console.error('Error observing target:', error);
+          // Error observing target
         }
       }
     }, 150);
@@ -246,7 +246,7 @@ const SalesReport = () => {
       // Reset sort order when fetching new data
       setSortOrder(null);
     } catch (error) {
-      console.error('Error fetching sales data:', error);
+      // Error fetching sales data
     } finally {
       setLoading(false);
     }
@@ -397,7 +397,6 @@ const SalesReport = () => {
       // Refresh the sales data
       await fetchSalesData();
     } catch (error: any) {
-      console.error('Error deleting transactions:', error);
       setSnackbar({
         open: true,
         message: error.response?.data?.error || 'Failed to delete transactions',

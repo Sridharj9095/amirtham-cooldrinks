@@ -30,7 +30,6 @@ const QRPayment = ({ open, onClose, order, onPaymentComplete }: QRPaymentProps) 
           const response = await axios.get(apiUrl);
           setUpiId(response.data.upiId || '');
         } catch (error) {
-          console.error('Error fetching UPI ID:', error);
           // Fallback to localStorage if API fails
           const storedUpiId = localStorage.getItem('amirtham_upi_id') || '';
           setUpiId(storedUpiId);

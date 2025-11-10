@@ -16,11 +16,6 @@ const getBaseUrl = () => {
 
 const API_BASE_URL = getBaseUrl();
 
-// Log API base URL in development for debugging
-if (import.meta.env.DEV) {
-  console.log('API Base URL:', API_BASE_URL);
-}
-
 // Export helper function to get API base URL
 export const getApiBaseUrl = (): string => {
   const envUrl = import.meta.env.VITE_API_URL;
@@ -44,26 +39,7 @@ const api = axios.create({
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response) {
-      // Server responded with error status
-      console.error('API Error:', {
-        url: error.config?.url,
-        method: error.config?.method,
-        status: error.response.status,
-        data: error.response.data,
-      });
-    } else if (error.request) {
-      // Request was made but no response received
-      console.error('API Request Error:', {
-        url: error.config?.url,
-        method: error.config?.method,
-        message: 'No response from server. Check if backend is running.',
-        baseURL: API_BASE_URL,
-      });
-    } else {
-      // Error setting up request
-      console.error('API Setup Error:', error.message);
-    }
+    // Silently handle errors - they will be caught by individual API calls
     return Promise.reject(error);
   }
 );
@@ -76,7 +52,6 @@ export const menuItemsAPI = {
       const response = await api.get<MenuItem[]>('/menu-items');
       return response.data;
     } catch (error: any) {
-      console.error('Error fetching menu items:', error);
       throw new Error(error.response?.data?.error || 'Failed to fetch menu items');
     }
   },
@@ -87,7 +62,6 @@ export const menuItemsAPI = {
       const response = await api.get<MenuItem>(`/menu-items/${id}`);
       return response.data;
     } catch (error: any) {
-      console.error('Error fetching menu item:', error);
       throw new Error(error.response?.data?.error || 'Failed to fetch menu item');
     }
   },
@@ -98,7 +72,6 @@ export const menuItemsAPI = {
       const response = await api.post<MenuItem>('/menu-items', item);
       return response.data;
     } catch (error: any) {
-      console.error('Error creating menu item:', error);
       throw new Error(error.response?.data?.error || 'Failed to create menu item');
     }
   },
@@ -109,7 +82,6 @@ export const menuItemsAPI = {
       const response = await api.put<MenuItem>(`/menu-items/${id}`, item);
       return response.data;
     } catch (error: any) {
-      console.error('Error updating menu item:', error);
       throw new Error(error.response?.data?.error || 'Failed to update menu item');
     }
   },
@@ -119,7 +91,6 @@ export const menuItemsAPI = {
     try {
       await api.delete(`/menu-items/${id}`);
     } catch (error: any) {
-      console.error('Error deleting menu item:', error);
       throw new Error(error.response?.data?.error || 'Failed to delete menu item');
     }
   },
@@ -137,7 +108,6 @@ export const ordersAPI = {
       const response = await api.post('/orders', order);
       return response.data;
     } catch (error: any) {
-      console.error('Error creating order:', error);
       throw new Error(error.response?.data?.error || 'Failed to create order');
     }
   },
@@ -148,7 +118,6 @@ export const ordersAPI = {
       const response = await api.get('/orders');
       return response.data;
     } catch (error: any) {
-      console.error('Error fetching orders:', error);
       throw new Error(error.response?.data?.error || 'Failed to fetch orders');
     }
   },
@@ -159,7 +128,6 @@ export const ordersAPI = {
       const response = await api.get(`/orders/${id}`);
       return response.data;
     } catch (error: any) {
-      console.error('Error fetching order:', error);
       throw new Error(error.response?.data?.error || 'Failed to fetch order');
     }
   },
@@ -169,7 +137,6 @@ export const ordersAPI = {
     try {
       await api.delete(`/orders/${id}`);
     } catch (error: any) {
-      console.error('Error deleting order:', error);
       throw new Error(error.response?.data?.error || 'Failed to delete order');
     }
   },
@@ -186,7 +153,6 @@ export const salesAPI = {
       const response = await api.get('/sales/monthly', { params });
       return response.data;
     } catch (error: any) {
-      console.error('Error fetching monthly sales:', error);
       throw new Error(error.response?.data?.error || 'Failed to fetch monthly sales');
     }
   },
@@ -200,7 +166,6 @@ export const salesAPI = {
       const response = await api.get('/sales/item', { params });
       return response.data;
     } catch (error: any) {
-      console.error('Error fetching item-wise sales:', error);
       throw new Error(error.response?.data?.error || 'Failed to fetch item-wise sales');
     }
   },

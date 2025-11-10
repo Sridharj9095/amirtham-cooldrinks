@@ -22,7 +22,6 @@ export const menuStorage = {
       const parsed = JSON.parse(items);
       return Array.isArray(parsed) ? parsed : [];
     } catch (error) {
-      console.error('Error reading menu items from localStorage:', error);
       return [];
     }
   },
@@ -31,7 +30,7 @@ export const menuStorage = {
     try {
       localStorage.setItem(MENU_STORAGE_KEY, JSON.stringify(items));
     } catch (error) {
-      console.error('Error saving menu items to localStorage:', error);
+      // Error saving menu items
     }
   },
 
@@ -154,7 +153,6 @@ export const pendingOrdersStorage = {
       const orders = localStorage.getItem(PENDING_ORDERS_KEY);
       return orders ? JSON.parse(orders) : [];
     } catch (error) {
-      console.error('Error reading pending orders from localStorage:', error);
       return [];
     }
   },
@@ -163,7 +161,7 @@ export const pendingOrdersStorage = {
     try {
       localStorage.setItem(PENDING_ORDERS_KEY, JSON.stringify(orders));
     } catch (error) {
-      console.error('Error saving pending orders to localStorage:', error);
+      // Error saving pending orders
     }
   },
 
@@ -217,7 +215,6 @@ export const currentPendingOrderStorage = {
     try {
       return localStorage.getItem(CURRENT_PENDING_ORDER_ID_KEY);
     } catch (error) {
-      console.error('Error reading current pending order ID:', error);
       return null;
     }
   },

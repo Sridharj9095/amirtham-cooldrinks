@@ -28,10 +28,8 @@ const Cart = () => {
   const loadPendingOrders = () => {
     try {
       const orders = pendingOrdersStorage.getOrders();
-      console.log('Cart: loadPendingOrders - orders:', orders?.length || 0);
       setPendingOrders(orders || []);
     } catch (error) {
-      console.error('Cart: Error loading pending orders:', error);
       setPendingOrders([]);
     }
   };
@@ -39,13 +37,10 @@ const Cart = () => {
   const updateCart = () => {
     try {
       const items = cartStorage.getItems();
-      console.log('Cart: updateCart - items:', items?.length || 0);
       setCartItems(items || []);
       const total = cartStorage.getTotalAmount() || 0;
-      console.log('Cart: updateCart - total:', total);
       setTotalAmount(total);
     } catch (error) {
-      console.error('Cart: Error updating cart:', error);
       setCartItems([]);
       setTotalAmount(0);
     }
@@ -55,7 +50,6 @@ const Cart = () => {
   useEffect(() => {
     const loadData = () => {
       try {
-        console.log('Cart: Loading data...');
         updateCart();
         loadPendingOrders();
         
@@ -67,13 +61,10 @@ const Cart = () => {
         } else {
           setCurrentPendingOrder(null);
         }
-        
-        console.log('Cart: Data loaded successfully');
       } catch (error) {
-        console.error('Cart: Error loading cart data:', error);
+        // Error loading cart data
       } finally {
         setIsLoading(false);
-        console.log('Cart: Loading complete, isLoading set to false');
       }
     };
     loadData();
@@ -99,7 +90,6 @@ const Cart = () => {
       
       // If cart items changed, update the state
       if (currentItemsStr !== stateItemsStr) {
-        console.log('Cart: Detected cart change from external source, updating...');
         updateCart();
       }
     }, 500); // Check every 500ms
@@ -123,13 +113,6 @@ const Cart = () => {
         
         // Compare the sorted arrays
         const cartChanged = JSON.stringify(sortedCartItems) !== JSON.stringify(sortedOriginalItems);
-        
-        console.log('Cart: Checking for unsaved changes', {
-          pendingOrderId,
-          cartItemsCount: cartItems.length,
-          originalItemsCount: originalOrder.items?.length || 0,
-          cartChanged,
-        });
         
         setHasUnsavedChanges(cartChanged);
         
@@ -258,12 +241,8 @@ const Cart = () => {
       
       // Show success message
       setSaveSuccessSnackbar(true);
-      
-      console.log('Pending order updated:', pendingOrderId);
     }
   };
-
-  console.log('Cart: Render - isLoading:', isLoading, 'cartItems:', cartItems.length, 'pendingOrders:', pendingOrders.length);
 
   if (isLoading) {
     return (

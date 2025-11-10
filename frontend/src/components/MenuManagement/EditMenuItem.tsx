@@ -48,7 +48,6 @@ const EditMenuItem = () => {
           setImageUrl(foundItem.image);
           setPreview(foundItem.image);
         } catch (error: any) {
-          console.error("Error loading menu item from API:", error);
           // Fallback to localStorage
           const items = menuStorage.getItems();
           const foundItem = items.find((i) => i.id === id);
@@ -110,7 +109,6 @@ const EditMenuItem = () => {
     try {
       // Update in MongoDB via API
       await menuItemsAPI.update(id, updateData);
-      console.log("Menu item updated in MongoDB:", id);
 
       // Also update in localStorage as backup
       menuStorage.updateItem(id, updateData);
@@ -123,13 +121,12 @@ const EditMenuItem = () => {
         navigate("/manage-menu");
       }, 1500);
     } catch (error: any) {
-      console.error("Error updating menu item:", error);
       alert(`Failed to update menu item: ${error.message}`);
       // Still try to update in localStorage as fallback
       try {
         menuStorage.updateItem(id, updateData);
       } catch (localError) {
-        console.error("Error updating in localStorage:", localError);
+        // Error updating in localStorage
       }
     }
   };

@@ -61,7 +61,6 @@ const AddMenuItem = () => {
     try {
       // Save to MongoDB via API
       const savedItem = await menuItemsAPI.create(newItem);
-      console.log('Menu item saved to MongoDB:', savedItem);
       
       // Also save to localStorage as backup
       menuStorage.addItem(savedItem);
@@ -74,7 +73,6 @@ const AddMenuItem = () => {
         navigate('/manage-menu');
       }, 1500);
     } catch (error: any) {
-      console.error('Error saving menu item:', error);
       alert(`Failed to save menu item: ${error.message}`);
       // Still try to save to localStorage as fallback
       try {
@@ -83,7 +81,7 @@ const AddMenuItem = () => {
           id: `item-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
         });
       } catch (localError) {
-        console.error('Error saving to localStorage:', localError);
+        // Error saving to localStorage
       }
     }
   };

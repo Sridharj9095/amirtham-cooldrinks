@@ -260,8 +260,6 @@ const Billing = () => {
         status: 'completed' as const,
       };
 
-      console.log('Saving order:', orderData);
-      
       const apiUrl = `${getApiBaseUrl()}/orders`;
       const response = await axios.post(apiUrl, orderData, {
         headers: {
@@ -269,8 +267,6 @@ const Billing = () => {
         },
         timeout: 10000, // 10 second timeout
       });
-      
-      console.log('Order saved successfully:', response.data);
       
       const savedOrder: Order = {
         orderNumber: response.data.orderNumber,
@@ -285,16 +281,11 @@ const Billing = () => {
       // IMPORTANT: Get pending order ID BEFORE clearing cart
       // because clearCart() also clears the pending order ID
       const pendingOrderId = currentPendingOrderStorage.getCurrentPendingOrderId();
-      console.log('Payment completed. Checking for pending order ID:', pendingOrderId);
       
       // If this order came from a pending order, remove it from pending orders
       if (pendingOrderId) {
-        console.log('Removing completed pending order:', pendingOrderId);
         pendingOrdersStorage.removeOrder(pendingOrderId);
         currentPendingOrderStorage.clearCurrentPendingOrderId();
-        console.log('Pending order removed after successful payment');
-      } else {
-        console.log('No pending order ID found - order was not from a pending order');
       }
       
       // Clear cart after successful payment
@@ -311,8 +302,6 @@ const Billing = () => {
         navigate('/');
       }, 3000);
     } catch (error: any) {
-      console.error('Error saving order:', error);
-      
       let errorMessage = 'Error saving order. Please try again.';
       
       if (error.code === 'ECONNREFUSED' || error.message?.includes('Network Error')) {
@@ -320,7 +309,6 @@ const Billing = () => {
       } else if (error.response) {
         // Server responded with error status
         errorMessage = `Error: ${error.response.data?.error || error.response.statusText || 'Server error'}`;
-        console.error('Response error:', error.response.data);
       } else if (error.request) {
         // Request was made but no response received
         errorMessage = 'No response from server. Please check if the backend is running.';

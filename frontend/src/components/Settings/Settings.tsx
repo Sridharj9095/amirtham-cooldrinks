@@ -90,7 +90,6 @@ const Settings: React.FC<SettingsProps> = ({ darkMode, onDarkModeChange }) => {
           localStorage.setItem('amirtham_auto_save_orders', response.data.autoSaveOrders.toString());
         }
       } catch (error) {
-        console.error('Error fetching settings:', error);
         // Fallback to localStorage if API fails
         const storedUpiId = localStorage.getItem('amirtham_upi_id') || '';
         const storedSound = localStorage.getItem('amirtham_sound_notifications');
@@ -126,7 +125,6 @@ const Settings: React.FC<SettingsProps> = ({ darkMode, onDarkModeChange }) => {
       localStorage.setItem('amirtham_sound_notifications', value.toString());
       setSnackbar({ open: true, message: `Sound notifications ${value ? 'enabled' : 'disabled'}`, severity: 'success' });
     } catch (error) {
-      console.error('Error updating sound notifications:', error);
       // Fallback to localStorage
       localStorage.setItem('amirtham_sound_notifications', value.toString());
       setSnackbar({ open: true, message: 'Failed to save to server, saved locally', severity: 'info' });
@@ -148,7 +146,6 @@ const Settings: React.FC<SettingsProps> = ({ darkMode, onDarkModeChange }) => {
       localStorage.setItem('amirtham_auto_save_orders', value.toString());
       setSnackbar({ open: true, message: `Auto-save orders ${value ? 'enabled' : 'disabled'}`, severity: 'success' });
     } catch (error) {
-      console.error('Error updating auto-save orders:', error);
       // Fallback to localStorage
       localStorage.setItem('amirtham_auto_save_orders', value.toString());
       setSnackbar({ open: true, message: 'Failed to save to server, saved locally', severity: 'info' });
@@ -200,7 +197,6 @@ const Settings: React.FC<SettingsProps> = ({ darkMode, onDarkModeChange }) => {
       
       setSnackbar({ open: true, message: 'Data exported successfully', severity: 'success' });
     } catch (error) {
-      console.error('Error exporting data:', error);
       setSnackbar({ open: true, message: 'Failed to export data', severity: 'error' });
     }
   };
@@ -236,7 +232,6 @@ const Settings: React.FC<SettingsProps> = ({ darkMode, onDarkModeChange }) => {
       setUpiIdEditMode(false);
       setSnackbar({ open: true, message: 'UPI ID saved successfully to database', severity: 'success' });
     } catch (error: any) {
-      console.error('Error saving UPI ID:', error);
       const errorMessage = error.response?.data?.error || 'Failed to save UPI ID';
       setSnackbar({ open: true, message: errorMessage, severity: 'error' });
     }
@@ -248,7 +243,6 @@ const Settings: React.FC<SettingsProps> = ({ darkMode, onDarkModeChange }) => {
       const response = await axios.get(apiUrl);
       setUpiId(response.data.upiId || '');
     } catch (error) {
-      console.error('Error fetching UPI ID:', error);
       // Fallback to localStorage if API fails
       const storedUpiId = localStorage.getItem('amirtham_upi_id') || '';
       setUpiId(storedUpiId);

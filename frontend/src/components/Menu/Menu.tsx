@@ -59,15 +59,8 @@ const Menu = () => {
           // If no items in database, try localStorage as emergency fallback
           const localItems = menuStorage.getItems();
           if (localItems.length > 0) {
-            console.warn(
-              "⚠️ No items in MongoDB, using localStorage as fallback:",
-              localItems.length
-            );
             setMenuItems(localItems);
           } else {
-            console.warn(
-              "⚠️ No menu items found. Please run migration script or add items through Menu Management."
-            );
             setMenuItems([]);
           }
         }
@@ -75,24 +68,15 @@ const Menu = () => {
         setIsLoading(false);
         initScrollAnimations();
       } catch (error: any) {
-        console.error("Error loading menu items from MongoDB:", error);
         // Emergency fallback to localStorage only
         try {
           const items = menuStorage.getItems();
           if (items.length > 0) {
-            console.warn(
-              "⚠️ MongoDB unavailable, using localStorage as fallback:",
-              items.length
-            );
             setMenuItems(items);
           } else {
-            console.error(
-              "❌ No menu items available. MongoDB connection failed and localStorage is empty."
-            );
             setMenuItems([]);
           }
         } catch (localError) {
-          console.error("Error loading from localStorage:", localError);
           setMenuItems([]);
         }
         setIsLoading(false);
