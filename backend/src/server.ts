@@ -17,7 +17,7 @@ const corsOptions = {
   origin: process.env.CLIENT_URL 
     ? process.env.CLIENT_URL.split(',').map(url => url.trim()) // Support multiple origins (comma-separated)
     : (process.env.NODE_ENV === 'production' 
-        ? ['https://your-frontend-app.vercel.app'] // Replace with your Vercel frontend URL
+        ? ['https://amirtham-cooldrinks-frontend.vercel.app'] // Vercel frontend URL
         : ['http://localhost:3000', 'http://localhost:5173']), // Allow localhost for development
   credentials: true,
   optionsSuccessStatus: 200
