@@ -1,0 +1,19 @@
+services:
+  - type: web
+    name: amirtham-cooldrinks-backend
+    env: node
+    plan: free
+    rootDir: backend
+    buildCommand: npm install && npm run build
+    startCommand: npm run start:prod
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: MONGODB_URI
+        sync: false  # Set this in Render dashboard
+      - key: CLIENT_URL
+        sync: false  # Set this to your Vercel frontend URL in Render dashboard
+    healthCheckPath: /api/health
+

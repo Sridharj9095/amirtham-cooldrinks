@@ -1,16 +1,18 @@
 import axios from 'axios';
 import { MenuItem } from '../types';
 
-// Use relative path in production, localhost in development
-const API_BASE_URL = import.meta.env.PROD 
-  ? '/api' 
-  : (import.meta.env.VITE_API_URL || 'http://localhost:5001/api');
+// Use environment variable for API URL, fallback to localhost in development
+const API_BASE_URL = import.meta.env.VITE_API_URL || 
+  (import.meta.env.PROD 
+    ? 'https://your-backend-app.onrender.com/api' // Replace with your Render backend URL
+    : 'http://localhost:5001/api');
 
 // Export helper function to get API base URL
 export const getApiBaseUrl = (): string => {
-  return import.meta.env.PROD 
-    ? '/api' 
-    : (import.meta.env.VITE_API_URL || 'http://localhost:5001/api');
+  return import.meta.env.VITE_API_URL || 
+    (import.meta.env.PROD 
+      ? 'https://your-backend-app.onrender.com/api' // Replace with your Render backend URL
+      : 'http://localhost:5001/api');
 };
 
 const api = axios.create({

@@ -77,8 +77,10 @@ A modern, full-stack restaurant management system built with React, TypeScript, 
 
    Create `backend/.env` file:
    ```env
-   MONGODB_URI=your_mongodb_connection_string
+   MONGODB_URI=mongodb://localhost:27017/amirtham-cooldrinks
    PORT=5001
+   NODE_ENV=development
+   CLIENT_URL=http://localhost:5173
    ```
 
    Create `frontend/.env` file (optional, for local development):
@@ -101,7 +103,7 @@ A modern, full-stack restaurant management system built with React, TypeScript, 
    ```
 
 6. **Open your browser**
-   - Frontend: http://localhost:3000
+   - Frontend: http://localhost:5173 (Vite default port)
    - Backend API: http://localhost:5001
 
 ## Available Scripts
@@ -127,18 +129,24 @@ For detailed MongoDB setup instructions, see `MONGODB_SETUP.md`.
 
 ## Deployment
 
-### Vercel Deployment
+This project is configured for deployment with:
+- **Frontend**: Vercel
+- **Backend**: Render
 
-This project is configured for deployment on Vercel. See `VERCEL_DEPLOYMENT.md` for detailed instructions.
+See `DEPLOYMENT.md` for detailed deployment instructions.
 
 ## Environment Variables
 
 ### Backend (.env)
 - `MONGODB_URI` - MongoDB connection string (required)
 - `PORT` - Server port (default: 5001)
+- `NODE_ENV` - Environment mode (development/production)
+- `CLIENT_URL` - Frontend URL for CORS (comma-separated for multiple origins)
 
 ### Frontend (.env)
 - `VITE_API_URL` - Backend API URL (default: http://localhost:5001/api)
+
+**Note**: The `api/` directory in the root contains Vercel serverless functions that are not used in the current deployment setup (frontend on Vercel, backend on Render).
 
 ## License
 
