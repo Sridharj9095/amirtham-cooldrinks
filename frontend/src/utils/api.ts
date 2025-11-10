@@ -16,11 +16,6 @@ const getBaseUrl = () => {
 
 const API_BASE_URL = getBaseUrl();
 
-// Log the API URL for debugging (remove in production if needed)
-if (import.meta.env.PROD) {
-  console.log('API Base URL:', API_BASE_URL);
-}
-
 // Export helper function to get API base URL
 export const getApiBaseUrl = (): string => {
   const envUrl = import.meta.env.VITE_API_URL;
