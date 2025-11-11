@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { menuStorage, categoryStorage } from '../../utils/localStorage';
-import { menuItemsAPI } from '../../utils/api';
+import { menuItemsAPI, categoriesAPI } from '../../utils/api';
 import { Container, Box, Typography, TextField, Button, Paper, Select, MenuItem, FormControl, InputLabel, Snackbar, Alert } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft, faSave } from '@fortawesome/free-solid-svg-icons';
@@ -19,7 +19,19 @@ const AddMenuItem = () => {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
 
   useEffect(() => {
-    setCategories(categoryStorage.getCategories());
+    const loadCategories = async () => {
+      try {
+        const fetchedCategories = await categoriesAPI.getAll();
+        const categoryNames = fetchedCategories.map(cat => cat.name);
+        setCategories(categoryNames);
+        // Sync to localStorage for backward compatibility
+        categoryStorage.saveCategories(categoryNames);
+      } catch (error) {
+        // Fallback to localStorage
+        setCategories(categoryStorage.getCategories());
+      }
+    };
+    loadCategories();
   }, []);
 
   const handleImageUrlChange = (url: string) => {

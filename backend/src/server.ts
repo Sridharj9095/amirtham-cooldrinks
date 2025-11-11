@@ -6,6 +6,7 @@ import orderRoutes from './routes/orders.js';
 import salesRoutes from './routes/sales.js';
 import menuItemRoutes from './routes/menuItems.js';
 import settingsRoutes from './routes/settings.js';
+import categoryRoutes from './routes/categories.js';
 
 dotenv.config();
 
@@ -35,6 +36,7 @@ app.use('/api/orders', orderRoutes);
 app.use('/api/sales', salesRoutes);
 app.use('/api/menu-items', menuItemRoutes);
 app.use('/api/settings', settingsRoutes);
+app.use('/api/categories', categoryRoutes);
 
 // Health check endpoints
 app.get('/', (req, res) => {

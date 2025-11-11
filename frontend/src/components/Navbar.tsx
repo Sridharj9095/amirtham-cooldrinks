@@ -27,10 +27,12 @@ import {
   useTheme,
 } from "@mui/material";
 import { cartStorage } from "../utils/localStorage";
+import { useShopName } from "../contexts/ShopNameContext";
 
 const Navbar = () => {
   const location = useLocation();
   const theme = useTheme();
+  const { shopName } = useShopName();
   const [cartCount, setCartCount] = useState(0);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const isDarkMode = theme.palette.mode === 'dark';
@@ -119,7 +121,7 @@ const Navbar = () => {
                 letterSpacing: { xs: '0.5px', md: 'normal' },
               }}
             >
-              Amirtham Cooldrinks
+              {shopName}
             </Typography>
           </Link>
         </Box>

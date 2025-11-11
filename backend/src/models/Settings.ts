@@ -1,6 +1,7 @@
 import mongoose, { Schema, Document } from 'mongoose';
 
 export interface ISettings extends Document {
+  shopName?: string;
   upiId?: string;
   soundNotifications?: boolean;
   autoSaveOrders?: boolean;
@@ -8,6 +9,11 @@ export interface ISettings extends Document {
 }
 
 const SettingsSchema: Schema = new Schema({
+  shopName: {
+    type: String,
+    trim: true,
+    default: 'My Restaurant',
+  },
   upiId: {
     type: String,
     trim: true,

@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import axios from 'axios';
 import { getApiBaseUrl } from '../../utils/api';
+import { useShopName } from '../../contexts/ShopNameContext';
 import {
   Container,
   Box,
@@ -61,6 +62,7 @@ ChartJS.register(
 );
 
 const SalesReport = () => {
+  const { shopName } = useShopName();
   const theme = useTheme();
   const [year, setYear] = useState(new Date().getFullYear());
   const [month, setMonth] = useState(new Date().getMonth() + 1);
@@ -427,7 +429,7 @@ const SalesReport = () => {
     // Header
     doc.setFontSize(20);
     doc.setFont('helvetica', 'bold');
-    doc.text('Amirtham Cooldrinks', pageWidth / 2, yPos, { align: 'center' });
+    doc.text(shopName, pageWidth / 2, yPos, { align: 'center' });
     yPos += 10;
 
     doc.setFontSize(14);

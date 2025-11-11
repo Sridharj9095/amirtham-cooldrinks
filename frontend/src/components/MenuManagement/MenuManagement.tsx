@@ -141,27 +141,27 @@ const MenuManagement = () => {
                 boxShadow: theme.palette.mode === 'dark' 
                   ? '0 2px 12px rgba(255,255,255,0.15)' 
                   : '0 2px 8px rgba(0,0,0,0.08)',
-                transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+                transition: 'all 0.2s ease',
                 transform: 'translateY(0) scale(1)',
-                animation: 'fadeInUp 0.6s ease-out',
+                animation: 'fadeInUp 0.3s ease-out',
                 '@keyframes fadeInUp': {
                   '0%': {
                     opacity: 0,
-                    transform: 'translateY(30px) scale(0.95)',
+                    transform: 'translateY(10px)',
                   },
                   '100%': {
                     opacity: 1,
-                    transform: 'translateY(0) scale(1)',
+                    transform: 'translateY(0)',
                   },
                 },
                 '&:hover': {
-                  transform: 'translateY(-8px) scale(1.02) rotate(1deg)',
+                  transform: 'translateY(-2px)',
                   boxShadow: theme.palette.mode === 'dark'
-                    ? '0 16px 64px rgba(255,255,255,0.4), 0 12px 32px rgba(255,255,255,0.3), 0 8px 16px rgba(255,255,255,0.25), 0 0 0 2px rgba(255,255,255,0.2)'
-                    : '0 16px 48px rgba(0,0,0,0.2), 0 8px 24px rgba(0,0,0,0.15)',
+                    ? '0 4px 16px rgba(255,255,255,0.2)'
+                    : '0 4px 12px rgba(0,0,0,0.12)',
                 },
                 '&:active': {
-                  transform: 'translateY(-4px) scale(0.98)',
+                  transform: 'translateY(0)',
                 },
               }}
             >
@@ -174,7 +174,7 @@ const MenuManagement = () => {
                   paddingTop: '66.67%', 
                   overflow: 'hidden',
                   '&:hover .card-image': {
-                    transform: 'scale(1.1)',
+                    transform: 'scale(1.02)',
                   },
                 }}
               >
@@ -191,7 +191,7 @@ const MenuManagement = () => {
                     width: '100%',
                     height: '100%',
                     objectFit: 'cover',
-                    transition: 'transform 0.6s cubic-bezier(0.4, 0, 0.2, 1)',
+                    transition: 'transform 0.2s ease',
                     transform: 'scale(1)',
                   }}
                 />
@@ -214,24 +214,16 @@ const MenuManagement = () => {
                     boxShadow: theme.palette.mode === 'dark'
                       ? '0 2px 8px rgba(0,0,0,0.5)'
                       : '0 2px 8px rgba(0,0,0,0.1)',
-                    transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                    transition: 'all 0.2s ease',
                     transform: 'scale(1)',
-                    animation: 'slideInRight 0.5s ease-out 0.2s both',
-                    '@keyframes slideInRight': {
+                    animation: 'fadeIn 0.2s ease-out 0.1s both',
+                    '@keyframes fadeIn': {
                       '0%': {
                         opacity: 0,
-                        transform: 'translateX(20px) scale(0.8)',
                       },
                       '100%': {
                         opacity: 1,
-                        transform: 'translateX(0) scale(1)',
                       },
-                    },
-                    '&:hover': {
-                      transform: 'scale(1.1)',
-                      boxShadow: theme.palette.mode === 'dark'
-                        ? '0 4px 12px rgba(0,0,0,0.7)'
-                        : '0 4px 12px rgba(0,0,0,0.2)',
                     },
                   }}
                 />
@@ -261,8 +253,8 @@ const MenuManagement = () => {
                     WebkitLineClamp: 2,
                     WebkitBoxOrient: 'vertical',
                     overflow: 'hidden',
-                    transition: 'color 0.3s ease',
-                    animation: 'fadeIn 0.6s ease-out 0.1s both',
+                    transition: 'color 0.2s ease',
+                    animation: 'fadeIn 0.2s ease-out 0.1s both',
                     '@keyframes fadeIn': {
                       '0%': {
                         opacity: 0,
@@ -341,32 +333,13 @@ const MenuManagement = () => {
                         backgroundColor: '#ef4444',
                         color: 'white',
                         padding: '8px',
-                        transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-                        position: 'relative',
-                        overflow: 'hidden',
-                        '&::before': {
-                          content: '""',
-                          position: 'absolute',
-                          top: '50%',
-                          left: '50%',
-                          width: 0,
-                          height: 0,
-                          borderRadius: '50%',
-                          background: 'rgba(255, 255, 255, 0.3)',
-                          transform: 'translate(-50%, -50%)',
-                          transition: 'width 0.6s, height 0.6s',
-                        },
+                        transition: 'all 0.2s ease',
                         '&:hover': {
                           backgroundColor: '#dc2626',
-                          transform: 'scale(1.15) rotate(5deg)',
-                          boxShadow: '0 4px 12px rgba(239, 68, 68, 0.4)',
-                          '&::before': {
-                            width: '300px',
-                            height: '300px',
-                          },
+                          boxShadow: '0 2px 8px rgba(239, 68, 68, 0.3)',
                         },
                         '&:active': {
-                          transform: 'scale(0.95) rotate(5deg)',
+                          transform: 'scale(0.95)',
                         },
                       }}
                     >
@@ -379,32 +352,13 @@ const MenuManagement = () => {
                         backgroundColor: '#ef4444',
                         color: 'white',
                         padding: '8px',
-                        transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-                        position: 'relative',
-                        overflow: 'hidden',
-                        '&::before': {
-                          content: '""',
-                          position: 'absolute',
-                          top: '50%',
-                          left: '50%',
-                          width: 0,
-                          height: 0,
-                          borderRadius: '50%',
-                          background: 'rgba(255, 255, 255, 0.3)',
-                          transform: 'translate(-50%, -50%)',
-                          transition: 'width 0.6s, height 0.6s',
-                        },
+                        transition: 'all 0.2s ease',
                         '&:hover': {
                           backgroundColor: '#dc2626',
-                          transform: 'scale(1.15) rotate(-5deg)',
-                          boxShadow: '0 4px 12px rgba(239, 68, 68, 0.4)',
-                          '&::before': {
-                            width: '300px',
-                            height: '300px',
-                          },
+                          boxShadow: '0 2px 8px rgba(239, 68, 68, 0.3)',
                         },
                         '&:active': {
-                          transform: 'scale(0.95) rotate(-5deg)',
+                          transform: 'scale(0.95)',
                         },
                       }}
                     >

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { menuStorage, categoryStorage } from "../../utils/localStorage";
-import { menuItemsAPI } from "../../utils/api";
+import { menuItemsAPI, categoriesAPI } from "../../utils/api";
 import { MenuItem } from "../../types";
 import {
   Container,
@@ -62,7 +62,17 @@ const EditMenuItem = () => {
           }
         }
       }
-      setCategories(categoryStorage.getCategories());
+      // Load categories from MongoDB
+      try {
+        const fetchedCategories = await categoriesAPI.getAll();
+        const categoryNames = fetchedCategories.map((cat) => cat.name);
+        setCategories(categoryNames);
+        // Sync to localStorage for backward compatibility
+        categoryStorage.saveCategories(categoryNames);
+      } catch (error) {
+        // Fallback to localStorage
+        setCategories(categoryStorage.getCategories());
+      }
     };
 
     loadItem();

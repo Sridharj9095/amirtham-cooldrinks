@@ -57,7 +57,16 @@ body {
   }
   
   @page {
-    margin: 1cm;
+    size: A4;
+    margin: 0;
+  }
+  
+  /* Full page print for receipts */
+  #bill-content {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 20mm !important;
   }
   
   h1, h2, h3, h4, h5, h6 {

@@ -1,4 +1,4 @@
-# Amirtham Cooldrinks - Restaurant Management System
+# My Restaurant - Restaurant Management System
 
 A modern, full-stack restaurant management system built with React, TypeScript, Node.js, Express, and MongoDB.
 
@@ -14,6 +14,7 @@ A modern, full-stack restaurant management system built with React, TypeScript, 
 ## Tech Stack
 
 ### Frontend
+
 - React 18 with TypeScript
 - Material-UI (MUI) for components
 - Vite for build tooling
@@ -21,6 +22,7 @@ A modern, full-stack restaurant management system built with React, TypeScript, 
 - React Router for navigation
 
 ### Backend
+
 - Node.js with Express
 - TypeScript
 - MongoDB with Mongoose
@@ -56,18 +58,21 @@ A modern, full-stack restaurant management system built with React, TypeScript, 
 ### Installation
 
 1. **Clone the repository**
+
    ```bash
    git clone <your-repo-url>
    cd amirtham-cooldrinks
    ```
 
 2. **Install frontend dependencies**
+
    ```bash
    cd frontend
    npm install
    ```
 
 3. **Install backend dependencies**
+
    ```bash
    cd ../backend
    npm install
@@ -76,6 +81,7 @@ A modern, full-stack restaurant management system built with React, TypeScript, 
 4. **Set up environment variables**
 
    Create `backend/.env` file:
+
    ```env
    MONGODB_URI=mongodb://localhost:27017/amirtham-cooldrinks
    PORT=5001
@@ -84,6 +90,7 @@ A modern, full-stack restaurant management system built with React, TypeScript, 
    ```
 
    Create `frontend/.env` file (optional, for local development):
+
    ```env
    VITE_API_URL=http://localhost:5001/api
    ```
@@ -91,12 +98,14 @@ A modern, full-stack restaurant management system built with React, TypeScript, 
 5. **Start the development servers**
 
    Terminal 1 (Backend):
+
    ```bash
    cd backend
    npm run dev
    ```
 
    Terminal 2 (Frontend):
+
    ```bash
    cd frontend
    npm run dev
@@ -109,11 +118,13 @@ A modern, full-stack restaurant management system built with React, TypeScript, 
 ## Available Scripts
 
 ### Frontend
+
 - `npm run dev` - Start development server
 - `npm run build` - Build for production
 - `npm run preview` - Preview production build
 
 ### Backend
+
 - `npm run dev` - Start development server with hot reload
 - `npm run build` - Compile TypeScript
 - `npm start` - Start production server
@@ -130,6 +141,7 @@ For detailed MongoDB setup instructions, see `MONGODB_SETUP.md`.
 ## Deployment
 
 This project is configured for deployment with:
+
 - **Frontend**: Vercel
 - **Backend**: Render
 
@@ -138,12 +150,14 @@ See `DEPLOYMENT.md` for detailed deployment instructions.
 ## Environment Variables
 
 ### Backend (.env)
+
 - `MONGODB_URI` - MongoDB connection string (required)
 - `PORT` - Server port (default: 5001)
 - `NODE_ENV` - Environment mode (development/production)
 - `CLIENT_URL` - Frontend URL for CORS (comma-separated for multiple origins)
 
 ### Frontend (.env)
+
 - `VITE_API_URL` - Backend API URL (default: http://localhost:5001/api)
 
 **Note**: The `api/` directory in the root contains Vercel serverless functions that are not used in the current deployment setup (frontend on Vercel, backend on Render).

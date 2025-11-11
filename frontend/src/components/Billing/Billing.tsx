@@ -8,9 +8,11 @@ import { Container, Paper, Typography, Box, Button, Table, TableBody, TableCell,
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPrint, faCreditCard, faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import { getApiBaseUrl } from '../../utils/api';
+import { useShopName } from '../../contexts/ShopNameContext';
 
 const Billing = () => {
   const navigate = useNavigate();
+  const { shopName } = useShopName();
   const [cartItems] = useState(cartStorage.getItems());
   const [totalAmount, setTotalAmount] = useState(0);
   const [orderNumber, setOrderNumber] = useState('');
@@ -47,7 +49,7 @@ const Billing = () => {
           <title>Receipt - ${orderNumber}</title>
           <style>
             @page {
-              size: 80mm auto;
+              size: A4;
               margin: 0;
             }
             * {
@@ -56,18 +58,27 @@ const Billing = () => {
               box-sizing: border-box;
             }
             body {
-              font-family: 'Courier New', monospace;
+              font-family: 'Courier New', 'Monaco', 'Consolas', monospace;
               font-size: 12px;
               line-height: 1.4;
-              padding: 20px 15px;
+              padding: 0;
+              width: 100%;
+              display: flex;
+              justify-content: center;
+              background: white;
+            }
+            .receipt-container {
               width: 80mm;
               max-width: 80mm;
+              margin: 0 auto;
+              padding: 15px 10px;
+              background: white;
             }
             .receipt-header {
               text-align: center;
               margin-bottom: 15px;
-              border-bottom: 2px dashed #000;
               padding-bottom: 10px;
+              border-bottom: 1px dashed #000;
             }
             .receipt-title {
               font-size: 18px;
@@ -75,20 +86,24 @@ const Billing = () => {
               margin-bottom: 5px;
               text-transform: uppercase;
               letter-spacing: 1px;
+              font-family: 'Courier New', monospace;
             }
             .receipt-subtitle {
               font-size: 11px;
-              color: #666;
+              color: #333;
               margin-bottom: 3px;
+              font-family: 'Courier New', monospace;
             }
             .receipt-info {
               margin: 10px 0;
               font-size: 11px;
+              font-family: 'Courier New', monospace;
             }
             .receipt-info-row {
               display: flex;
               justify-content: space-between;
               margin-bottom: 3px;
+              font-family: 'Courier New', monospace;
             }
             .receipt-divider {
               border-top: 1px dashed #000;
@@ -98,47 +113,52 @@ const Billing = () => {
               margin: 10px 0;
             }
             .receipt-item {
-              margin-bottom: 8px;
+              margin-bottom: 6px;
             }
             .receipt-item-row {
               display: flex;
               justify-content: space-between;
               margin-bottom: 2px;
+              font-size: 12px;
+              font-family: 'Courier New', monospace;
             }
             .item-name {
               flex: 1;
-              font-weight: bold;
+              font-weight: normal;
             }
             .item-quantity {
-              margin: 0 10px;
-              font-weight: bold;
+              margin: 0 8px;
+              font-weight: normal;
             }
             .item-price {
               text-align: right;
-              min-width: 60px;
+              min-width: 50px;
             }
             .item-total {
               text-align: right;
-              font-weight: bold;
+              font-weight: normal;
               margin-top: 2px;
+              font-size: 12px;
             }
             .receipt-total {
               margin-top: 15px;
-              border-top: 2px dashed #000;
+              border-top: 1px dashed #000;
               padding-top: 10px;
             }
             .total-row {
               display: flex;
               justify-content: space-between;
-              font-size: 14px;
-              font-weight: bold;
-              margin-bottom: 5px;
+              font-size: 12px;
+              font-weight: normal;
+              margin-bottom: 3px;
+              font-family: 'Courier New', monospace;
             }
             .grand-total {
-              font-size: 16px;
-              border-top: 2px solid #000;
+              font-size: 14px;
+              border-top: 1px solid #000;
               padding-top: 5px;
               margin-top: 5px;
+              font-weight: bold;
             }
             .receipt-footer {
               text-align: center;
@@ -146,6 +166,7 @@ const Billing = () => {
               padding-top: 15px;
               border-top: 1px dashed #000;
               font-size: 10px;
+              font-family: 'Courier New', monospace;
             }
             .thank-you {
               font-size: 12px;
@@ -155,18 +176,32 @@ const Billing = () => {
             }
             @media print {
               body {
+                padding: 0;
+                width: 100%;
+                display: flex;
+                justify-content: center;
+              }
+              .receipt-container {
+                width: 80mm;
+                max-width: 80mm;
+                margin: 0 auto;
                 padding: 15px 10px;
               }
               @page {
-                size: 80mm auto;
+                size: A4;
                 margin: 0;
+              }
+              * {
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
               }
             }
           </style>
         </head>
         <body>
+          <div class="receipt-container">
           <div class="receipt-header">
-            <div class="receipt-title">Amirtham Cooldrinks</div>
+            <div class="receipt-title">${shopName}</div>
             <div class="receipt-subtitle">Fresh Juices & Milkshakes</div>
             <div class="receipt-subtitle">Thank You for Your Visit!</div>
           </div>
@@ -229,6 +264,7 @@ const Billing = () => {
             <div class="thank-you">Thank You!</div>
             <div>Please Visit Again</div>
             <div style="margin-top: 10px; font-size: 9px;">This is a computer generated receipt</div>
+          </div>
           </div>
         </body>
       </html>
@@ -351,7 +387,7 @@ const Billing = () => {
       <Paper id="bill-content" className="p-6 print:shadow-none">
         <Box className="text-center mb-6 no-print">
           <Typography variant="h4" className="font-bold mb-2">
-            Amirtham Cooldrinks
+            {shopName}
           </Typography>
           <Typography variant="body2" color="text.secondary">
             Fresh Juices & Milkshakes

@@ -171,5 +171,64 @@ export const salesAPI = {
   },
 };
 
+// Category interface
+export interface Category {
+  id: string;
+  name: string;
+  displayOrder?: number;
+}
+
+// Categories API
+export const categoriesAPI = {
+  // Get all categories
+  getAll: async (): Promise<Category[]> => {
+    try {
+      const response = await api.get<Category[]>('/categories');
+      return response.data;
+    } catch (error: any) {
+      throw new Error(error.response?.data?.error || 'Failed to fetch categories');
+    }
+  },
+
+  // Get single category by ID
+  getById: async (id: string): Promise<Category> => {
+    try {
+      const response = await api.get<Category>(`/categories/${id}`);
+      return response.data;
+    } catch (error: any) {
+      throw new Error(error.response?.data?.error || 'Failed to fetch category');
+    }
+  },
+
+  // Create new category
+  create: async (category: { name: string; displayOrder?: number }): Promise<Category> => {
+    try {
+      const response = await api.post<Category>('/categories', category);
+      return response.data;
+    } catch (error: any) {
+      throw new Error(error.response?.data?.error || 'Failed to create category');
+    }
+  },
+
+  // Update category
+  update: async (id: string, category: { name?: string; displayOrder?: number }): Promise<Category> => {
+    try {
+      const response = await api.put<Category>(`/categories/${id}`, category);
+      return response.data;
+    } catch (error: any) {
+      throw new Error(error.response?.data?.error || 'Failed to update category');
+    }
+  },
+
+  // Delete category
+  delete: async (id: string): Promise<void> => {
+    try {
+      await api.delete(`/categories/${id}`);
+    } catch (error: any) {
+      throw new Error(error.response?.data?.error || 'Failed to delete category');
+    }
+  },
+};
+
 export default api;
 

@@ -14,6 +14,7 @@ router.get('/', async (req: Request, res: Response) => {
       // If no settings exist, create default settings
       if (!settings) {
         settings = new Settings({
+          shopName: 'My Restaurant',
           upiId: '',
           soundNotifications: true,
           autoSaveOrders: false,
@@ -22,6 +23,7 @@ router.get('/', async (req: Request, res: Response) => {
       }
       
       res.json({
+        shopName: settings.shopName || 'My Restaurant',
         upiId: settings.upiId || '',
         soundNotifications: settings.soundNotifications ?? true,
         autoSaveOrders: settings.autoSaveOrders ?? false,
@@ -29,6 +31,7 @@ router.get('/', async (req: Request, res: Response) => {
     } else {
       // Fallback to empty settings if MongoDB not connected
       res.json({
+        shopName: 'My Restaurant',
         upiId: '',
         soundNotifications: true,
         autoSaveOrders: false,
@@ -44,19 +47,23 @@ router.get('/', async (req: Request, res: Response) => {
 router.put('/', async (req: Request, res: Response) => {
   try {
     if (mongoose.connection.readyState === 1) {
-      const { upiId, soundNotifications, autoSaveOrders } = req.body;
+      const { shopName, upiId, soundNotifications, autoSaveOrders } = req.body;
       
       // Find existing settings or create new one
       let settings = await Settings.findOne();
       
       if (!settings) {
         settings = new Settings({
+          shopName: shopName || 'My Restaurant',
           upiId: upiId || '',
           soundNotifications: soundNotifications ?? true,
           autoSaveOrders: autoSaveOrders ?? false,
         });
       } else {
         // Update only provided fields
+        if (shopName !== undefined) {
+          settings.shopName = shopName.trim() || 'My Restaurant';
+        }
         if (upiId !== undefined) {
           settings.upiId = upiId.trim();
         }
@@ -71,6 +78,7 @@ router.put('/', async (req: Request, res: Response) => {
       await settings.save();
       
       res.json({
+        shopName: settings.shopName || 'My Restaurant',
         upiId: settings.upiId || '',
         soundNotifications: settings.soundNotifications ?? true,
         autoSaveOrders: settings.autoSaveOrders ?? false,
@@ -99,6 +107,7 @@ router.put('/upi-id', async (req: Request, res: Response) => {
       
       if (!settings) {
         settings = new Settings({
+          shopName: 'My Restaurant',
           upiId: upiId.trim(),
           soundNotifications: true,
           autoSaveOrders: false,

@@ -6,7 +6,7 @@ import {
   cartStorage,
   categoryStorage,
 } from "../../utils/localStorage";
-import { menuItemsAPI } from "../../utils/api";
+import { menuItemsAPI, categoriesAPI } from "../../utils/api";
 import MenuItem from "./MenuItem";
 import {
   TextField,
@@ -36,25 +36,35 @@ const Menu = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>("All");
   const [cartCount, setCartCount] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
+  const [availableCategories, setAvailableCategories] = useState<string[]>([]);
   const [itemsToShow, setItemsToShow] = useState(12); // Initial number of items to show
   const observerTarget = useRef<HTMLDivElement | null>(null);
   const loadingMore = useRef(false);
 
   useEffect(() => {
-    // Load menu items from MongoDB API
-    const loadMenuItems = async () => {
+    // Load menu items and categories from MongoDB API
+    const loadData = async () => {
       try {
         setIsLoading(true);
-        // Fetch from MongoDB API
+
+        // Fetch categories from MongoDB
+        try {
+          const categories = await categoriesAPI.getAll();
+          const categoryNames = categories.map((cat) => cat.name);
+          setAvailableCategories(categoryNames);
+          // Sync to localStorage for backward compatibility
+          categoryStorage.saveCategories(categoryNames);
+        } catch (catError) {
+          // Fallback to localStorage for categories
+          const localCategories = categoryStorage.getCategories();
+          setAvailableCategories(localCategories);
+        }
+
+        // Fetch menu items from MongoDB API
         const items = await menuItemsAPI.getAll();
 
         if (items.length > 0) {
           setMenuItems(items);
-          // Update categories from fetched items
-          const uniqueCategories = [
-            ...new Set(items.map((item) => item.category)),
-          ];
-          uniqueCategories.forEach((cat) => categoryStorage.addCategory(cat));
         } else {
           // If no items in database, try localStorage as emergency fallback
           const localItems = menuStorage.getItems();
@@ -76,15 +86,18 @@ const Menu = () => {
           } else {
             setMenuItems([]);
           }
+          const localCategories = categoryStorage.getCategories();
+          setAvailableCategories(localCategories);
         } catch (localError) {
           setMenuItems([]);
+          setAvailableCategories([]);
         }
         setIsLoading(false);
         initScrollAnimations();
       }
     };
 
-    loadMenuItems();
+    loadData();
   }, []);
 
   useEffect(() => {
@@ -113,12 +126,14 @@ const Menu = () => {
   }, []);
 
   const categories = useMemo(() => {
-    // Get unique categories from menu items
-    const uniqueCategories = [
-      ...new Set(menuItems.map((item) => item.category)),
-    ];
-    return ["All", ...uniqueCategories];
-  }, [menuItems]);
+    // Use categories from MongoDB, but also include any categories from menu items that might not be in the list
+    const itemCategories = new Set(menuItems.map((item) => item.category));
+    const allCategories = new Set([
+      ...availableCategories,
+      ...Array.from(itemCategories),
+    ]);
+    return ["All", ...Array.from(allCategories).sort()];
+  }, [menuItems, availableCategories]);
 
   const filteredItems = useMemo(() => {
     const filtered = menuItems.filter((item) => {

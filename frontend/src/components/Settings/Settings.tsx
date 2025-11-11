@@ -42,6 +42,7 @@ import {
   faQrcode,
   faEdit,
   faSave,
+  faStore,
 } from '@fortawesome/free-solid-svg-icons';
 import { cartStorage, pendingOrdersStorage, menuStorage, categoryStorage } from '../../utils/localStorage';
 import axios from 'axios';
@@ -67,6 +68,8 @@ const Settings: React.FC<SettingsProps> = ({ darkMode, onDarkModeChange }) => {
   });
 
   // Settings preferences (stored in MongoDB)
+  const [shopName, setShopName] = useState('My Restaurant');
+  const [shopNameEditMode, setShopNameEditMode] = useState(false);
   const [soundNotifications, setSoundNotifications] = useState(true);
   const [autoSaveOrders, setAutoSaveOrders] = useState(false);
   const [upiId, setUpiId] = useState('');
@@ -79,6 +82,7 @@ const Settings: React.FC<SettingsProps> = ({ darkMode, onDarkModeChange }) => {
       try {
         const apiUrl = `${getApiBaseUrl()}/settings`;
         const response = await axios.get(apiUrl);
+        setShopName(response.data.shopName || 'My Restaurant');
         setUpiId(response.data.upiId || '');
         setSoundNotifications(response.data.soundNotifications ?? true);
         setAutoSaveOrders(response.data.autoSaveOrders ?? false);
@@ -91,9 +95,11 @@ const Settings: React.FC<SettingsProps> = ({ darkMode, onDarkModeChange }) => {
         }
       } catch (error) {
         // Fallback to localStorage if API fails
+        const storedShopName = localStorage.getItem('amirtham_shop_name') || 'My Restaurant';
         const storedUpiId = localStorage.getItem('amirtham_upi_id') || '';
         const storedSound = localStorage.getItem('amirtham_sound_notifications');
         const storedAutoSave = localStorage.getItem('amirtham_auto_save_orders');
+        setShopName(storedShopName);
         setUpiId(storedUpiId);
         setSoundNotifications(storedSound ? storedSound === 'true' : true);
         setAutoSaveOrders(storedAutoSave ? storedAutoSave === 'true' : false);
@@ -110,6 +116,48 @@ const Settings: React.FC<SettingsProps> = ({ darkMode, onDarkModeChange }) => {
     onDarkModeChange(event.target.checked);
   };
 
+  const handleShopNameSave = async () => {
+    if (!shopName.trim()) {
+      setSnackbar({ open: true, message: 'Please enter a valid shop name', severity: 'error' });
+      return;
+    }
+
+    try {
+      const apiUrl = `${getApiBaseUrl()}/settings`;
+      const response = await axios.put(apiUrl, {
+        shopName: shopName.trim(),
+        soundNotifications,
+        autoSaveOrders,
+        upiId,
+      });
+      setShopName(response.data.shopName || shopName.trim());
+      setShopNameEditMode(false);
+      // Update localStorage for fallback
+      localStorage.setItem('amirtham_shop_name', response.data.shopName || shopName.trim());
+      // Update document title
+      document.title = `${response.data.shopName || shopName.trim()} - Restaurant Management`;
+      setSnackbar({ open: true, message: 'Shop name saved successfully', severity: 'success' });
+      // Refresh shop name in context
+      window.dispatchEvent(new Event('shopNameUpdated'));
+    } catch (error: any) {
+      const errorMessage = error.response?.data?.error || 'Failed to save shop name';
+      setSnackbar({ open: true, message: errorMessage, severity: 'error' });
+    }
+  };
+
+  const handleShopNameCancel = async () => {
+    try {
+      const apiUrl = `${getApiBaseUrl()}/settings`;
+      const response = await axios.get(apiUrl);
+      setShopName(response.data.shopName || 'Amirtham Cooldrinks');
+    } catch (error) {
+      // Fallback to localStorage if API fails
+      const storedShopName = localStorage.getItem('amirtham_shop_name') || 'Amirtham Cooldrinks';
+      setShopName(storedShopName);
+    }
+    setShopNameEditMode(false);
+  };
+
   const handleSoundNotificationsToggle = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.checked;
     setSoundNotifications(value);
@@ -117,6 +165,7 @@ const Settings: React.FC<SettingsProps> = ({ darkMode, onDarkModeChange }) => {
     try {
       const apiUrl = `${getApiBaseUrl()}/settings`;
       await axios.put(apiUrl, {
+        shopName,
         soundNotifications: value,
         autoSaveOrders,
         upiId,
@@ -138,6 +187,7 @@ const Settings: React.FC<SettingsProps> = ({ darkMode, onDarkModeChange }) => {
     try {
       const apiUrl = `${getApiBaseUrl()}/settings`;
       await axios.put(apiUrl, {
+        shopName,
         soundNotifications,
         autoSaveOrders: value,
         upiId,
@@ -392,6 +442,147 @@ const Settings: React.FC<SettingsProps> = ({ darkMode, onDarkModeChange }) => {
                 />
               </Box>
             </Box>
+          </Paper>
+        </Box>
+
+        <Divider sx={{ my: 3 }} />
+
+        {/* Shop Name Settings */}
+        <Box sx={{ mb: 3 }}>
+          <Typography variant="h6" sx={{ mb: 2, fontWeight: 600 }}>
+            Shop Information
+          </Typography>
+          
+          <Paper
+            elevation={0}
+            sx={{
+              p: { xs: 2, sm: 3 },
+              backgroundColor: darkMode 
+                ? 'rgba(255, 255, 255, 0.05)' 
+                : 'rgba(0, 0, 0, 0.02)',
+              borderRadius: 2,
+              border: `1px solid ${darkMode ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)'}`,
+            }}
+          >
+            <Box sx={{ 
+              display: 'flex', 
+              alignItems: { xs: 'flex-start', sm: 'center' }, 
+              gap: { xs: 1.5, sm: 2 }, 
+              mb: 2,
+              flexDirection: { xs: 'column', sm: 'row' },
+            }}>
+              <Box
+                sx={{
+                  width: { xs: 40, sm: 48 },
+                  height: { xs: 40, sm: 48 },
+                  borderRadius: '50%',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  backgroundColor: darkMode
+                    ? 'rgba(255, 255, 255, 0.1)'
+                    : 'rgba(239, 68, 68, 0.1)',
+                  flexShrink: 0,
+                }}
+              >
+                <FontAwesomeIcon
+                  icon={faStore}
+                  style={{
+                    fontSize: isMobile ? '20px' : '24px',
+                    color: darkMode ? '#fff' : '#ef4444',
+                  }}
+                />
+              </Box>
+              <Box sx={{ flex: 1, width: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+                <Typography variant="body1" sx={{ fontWeight: 600, mb: 0.5, fontSize: { xs: '0.95rem', sm: '1rem' }, lineHeight: 1.2 }}>
+                  Shop Name
+                </Typography>
+                <Typography variant="body2" color="text.secondary" sx={{ fontSize: { xs: '0.8rem', sm: '0.875rem' }, lineHeight: 1.4 }}>
+                  Customize your shop name that appears throughout the website
+                </Typography>
+              </Box>
+            </Box>
+
+            {!shopNameEditMode ? (
+              <Box sx={{ 
+                display: 'flex', 
+                alignItems: 'center', 
+                gap: 2, 
+                mt: 2,
+                flexDirection: { xs: 'column', sm: 'row' },
+              }}>
+                <TextField
+                  fullWidth
+                  label="Shop Name"
+                  value={shopName || 'Not set'}
+                  disabled
+                  variant="outlined"
+                  size="small"
+                  sx={{ width: { xs: '100%', sm: 'auto' } }}
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <FontAwesomeIcon icon={faStore} style={{ color: theme.palette.text.secondary }} />
+                      </InputAdornment>
+                    ),
+                  }}
+                />
+                <Button
+                  variant="outlined"
+                  startIcon={<FontAwesomeIcon icon={faEdit} />}
+                  onClick={() => setShopNameEditMode(true)}
+                  sx={{ 
+                    minWidth: { xs: '100%', sm: '120px' },
+                    width: { xs: '100%', sm: 'auto' },
+                  }}
+                >
+                  {shopName ? 'Edit' : 'Add'}
+                </Button>
+              </Box>
+            ) : (
+              <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, mt: 2 }}>
+                <TextField
+                  fullWidth
+                  label="Shop Name"
+                  placeholder="e.g., My Restaurant, Coffee Shop"
+                  value={shopName}
+                  onChange={(e) => setShopName(e.target.value)}
+                  variant="outlined"
+                  size="small"
+                  helperText="Enter your shop name to customize it throughout the website"
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <FontAwesomeIcon icon={faStore} style={{ color: theme.palette.primary.main }} />
+                      </InputAdornment>
+                    ),
+                  }}
+                />
+                <Box sx={{ 
+                  display: 'flex', 
+                  gap: 2, 
+                  justifyContent: { xs: 'stretch', sm: 'flex-end' },
+                  flexDirection: { xs: 'column', sm: 'row' },
+                }}>
+                  <Button
+                    variant="outlined"
+                    onClick={handleShopNameCancel}
+                    fullWidth={isMobile}
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    startIcon={<FontAwesomeIcon icon={faSave} />}
+                    onClick={handleShopNameSave}
+                    fullWidth={isMobile}
+                  >
+                    Save
+                  </Button>
+                </Box>
+              </Box>
+            )}
           </Paper>
         </Box>
 
@@ -962,7 +1153,7 @@ const Settings: React.FC<SettingsProps> = ({ darkMode, onDarkModeChange }) => {
               />
               <Box>
                 <Typography variant="body1" sx={{ fontWeight: 600 }}>
-                  Amirtham Cooldrinks
+                  {shopName}
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
                   Restaurant Ordering System
