@@ -14,15 +14,30 @@ const app = express();
 const PORT = process.env.PORT || 5001;
 
 // CORS configuration
+// Determine if we're in production (Render.com or production environment)
+const isProduction = process.env.NODE_ENV === 'production' || process.env.RENDER === 'true';
+
 const corsOptions = {
   origin: process.env.CLIENT_URL 
     ? process.env.CLIENT_URL.split(',').map(url => url.trim()) // Support multiple origins (comma-separated)
-    : (process.env.NODE_ENV === 'production' 
-        ? ['https://amirtham-cooldrinks-frontend.vercel.app'] // Vercel frontend URL
+    : (isProduction 
+        ? [
+            'https://my-new-restaurant-frontend.vercel.app', // Current Vercel frontend URL
+            'https://amirtham-cooldrinks-frontend.vercel.app', // Previous Vercel frontend URL (for backward compatibility)
+          ]
         : ['http://localhost:3000', 'http://localhost:5173']), // Allow localhost for development
   credentials: true,
-  optionsSuccessStatus: 200
+  optionsSuccessStatus: 200,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
 };
+
+// Log CORS configuration for debugging
+console.log('CORS Configuration:', {
+  isProduction,
+  clientUrl: process.env.CLIENT_URL || 'Not set',
+  allowedOrigins: corsOptions.origin
+});
 
 // Middleware
 app.use(cors(corsOptions));
